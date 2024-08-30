@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; Stisla 2018
+      Copyright &copy; Perwira Teknologi Informasi 2024
   </div>
