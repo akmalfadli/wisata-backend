@@ -5,12 +5,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('pages.auth.login');
 });
 
-
+Route::get('/auth-register', [RegisterController::class, 'index'])->name('auth-register');
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', function () {
         return view('pages.dashboard');

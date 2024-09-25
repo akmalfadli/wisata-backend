@@ -13,22 +13,22 @@
             </li>
 
             <li class="nav-item ">
-                <a href="{{ route('users.index') }}" class="nav-link "><i class="fas fa-columns"></i>
+                <a href="{{ route('users.index') }}" class="nav-link "><i class="fas fa-user"></i>
                     <span>Users</span></a>
             </li>
 
             <li class="nav-item ">
-                <a href="{{ route('categories.index') }}" class="nav-link "><i class="fas fa-columns"></i>
+                <a href="{{ route('categories.index') }}" class="nav-link "><i class="fas fa-list"></i>
                     <span>Categories</span></a>
             </li>
 
             <li class="nav-item ">
-                <a href="{{ route('products.index') }}" class="nav-link "><i class="fas fa-columns"></i>
+                <a href="{{ route('products.index') }}" class="nav-link "><i class="fas fa-ticket"></i>
                     <span>Tickets</span></a>
             </li>
 
             <li class="nav-item ">
-                <a href="{{ route('orders.index') }}" class="nav-link "><i class="fas fa-columns"></i>
+                <a href="{{ route('orders.index') }}" class="nav-link "><i class="fas fa-bar-chart"></i>
                     <span>Orders</span></a>
             </li>
 
