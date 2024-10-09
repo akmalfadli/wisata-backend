@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -39,6 +40,8 @@ class ProductController extends Controller
         $product->description = '';
         $product->price = $request->price;
         $product->criteria = $request->criteria;
+        $product->created_by = Auth::user()->id;
+        $product->updated= Auth::user()->id;
         $product->favorite = false;
         $product->status = 'published';
         $product->stock = 0;
