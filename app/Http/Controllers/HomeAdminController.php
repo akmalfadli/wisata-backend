@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Home;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class HomeAdminController extends Controller
@@ -12,7 +13,8 @@ class HomeAdminController extends Controller
      */
     public function index()
     {
-        //
+        $data = OrderItem::where();
+
     }
 
     /**

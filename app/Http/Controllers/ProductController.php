@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -55,11 +56,12 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
-
         $product->criteria = $request->criteria;
         $product->favorite = $request->favorite;
         $product->status = $request->status;
         $product->stock = $request->stock;
+        $product->created_by = Auth::user()->id;
+        $product->updated_by = Auth::user()->id;
         $product->save();
 
         //image
@@ -90,6 +92,7 @@ class ProductController extends Controller
         $product->favorite = $request->favorite;
         $product->status = $request->status;
         $product->stock = $request->stock;
+        $product->updated_by = Auth::user()->id;
         $product->save();
 
         //check if image is not empty
