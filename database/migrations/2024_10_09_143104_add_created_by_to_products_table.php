@@ -15,8 +15,8 @@ return new class extends Migration
 
             $table->integer('created_by');
             $table->integer('updated_by');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL')->nullable();
 
         });
     }
