@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -10,6 +11,27 @@ use App\Models\OrderItem;
 class OrderController extends Controller
 {
     //
+
+    public function index()
+    {
+         //$orders_all = Order::with(('cashier'))->orderBy('created_at', 'DESC');
+
+
+        /*
+         $orders_all = Order::with('orderItems.product')
+         ->whereHas('orderItems.product', function ($query)  {
+             $query->where('id', 1);
+         })
+         ->orderBy('created_at', 'DESC')
+         ->get();
+         */
+        $categoryId = 2;
+        $orders_all= Category::findOrFail($categoryId)->product;
+
+        //$karagplay_items = $orders_all->sum('payment_amount');
+      //  $orders = $orders_all->paginate(10);
+        return response()->json(['status' => 'success', 'data' => $orders_all]);
+    }
     public function store(Request $request)
     {
         $request->validate([

@@ -23,3 +23,4 @@ Route::apiResource('/api-categories', CategoryController::class)->middleware('au
 
 //orders
 Route::post('/api-orders', [OrderController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/get-orders', [OrderController::class, 'index'])->middleware('auth:sanctum');

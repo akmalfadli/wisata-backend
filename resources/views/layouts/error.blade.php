@@ -58,7 +58,7 @@
     <script src="{{ asset('library/popper.js/dist/umd/popper.js') }}"></script>
     <script src="{{ asset('library/tooltip.js/dist/umd/tooltip.js') }}"></script>
     <script src="{{ asset('library/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('library/jquery.nicescroll/dist/jquery.nicescroll.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js" integrity="sha512-zMfrMAZYAlNClPKjN+JMuslK/B6sPM09BGvrWlW+cymmPmsUT1xJF3P4kxI3lOh9zypakSgWaTpY6vDJY/3Dig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('library/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
 

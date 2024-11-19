@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Akmal Fadli',
             'email' => 'fadli@perwirateknologi.com',
@@ -27,7 +25,5 @@ class DatabaseSeeder extends Seeder
         //category factory 2
         Category::factory(2)->create();
 
-        //product factory 100
-        Product::factory(2)->create();
     }
 }
