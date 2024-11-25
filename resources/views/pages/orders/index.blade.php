@@ -34,9 +34,8 @@
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-    <script>
-        // Function to Initialize Date Range Picker
-        function initializeDateRangePicker() {
+	<script>
+		function initializeDateRangePicker() {
             $('input[name="daterange"]').daterangepicker({
                 opens: 'left'
             }, function(start, end) {
@@ -59,6 +58,7 @@
                         $('#table-container').html(response.html);
                         // Reinitialize date picker
                         initializeDateRangePicker();
+
                     },
                     error: function(xhr, status, error) {
                         console.error('AJAX Error:', error);
@@ -73,4 +73,5 @@
             initializeDateRangePicker();
         });
     </script>
+
 @endpush

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterController;
@@ -13,13 +14,11 @@ Route::get('/', function () {
 
 Route::get('/auth-register', [RegisterController::class, 'index'])->name('auth-register');
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('pages.dashboard');
-    })->name('home');
+    Route::get('/home',[DashboardController::class, 'index'])->name('home');
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     //Route::resource('orders', OrderController::class);
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{id} ', [OrderController::class, 'show'])->name('orders.show');
 });
