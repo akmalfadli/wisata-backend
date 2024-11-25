@@ -24,7 +24,7 @@
 
             <li class="nav-item ">
                 <a href="{{ route('products.index') }}" class="nav-link "><i class="fas fa-ticket"></i>
-                    <span>Tickets</span></a>
+                    <span>Product / Tickets</span></a>
             </li>
 
             <li class="nav-item ">
@@ -32,7 +32,8 @@
                     <span>Orders</span></a>
             </li>
             <div class="border-top my-2"></div>
-            <li class="nav-item">
+
+            <li id="keuangan-menu" class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-wallet"></i>
                     <span>Keuangan</span>
@@ -40,14 +41,20 @@
                 </a>
                 <ul class="nav nav-treeview" style="display: none; padding-left: 20px;"> <!-- Sub-menu -->
                     <li class="nav-item">
+                        <a href="/keuangan/dashboard" class="nav-link">
+                            <i class="fas fa-book"></i> <!-- Ikon Pemasukan -->
+                            <span>Saldo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/keuangan/pemasukan" class="nav-link">
-                            <i class="fas fa-arrow-down"></i> <!-- Ikon Pemasukan -->
+                            <i class="fas fa-hand-holding-usd"></i> <!-- Ikon Pemasukan -->
                             <span>Pemasukan</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/keuangan/pengeluaran" class="nav-link">
-                            <i class="fas fa-arrow-up"></i> <!-- Ikon Pengeluaran -->
+                            <i class="fas fa-donate"></i> <!-- Ikon Pengeluaran -->
                             <span>Pengeluaran</span>
                         </a>
                     </li>
@@ -58,30 +65,46 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const navItems = document.querySelectorAll('.nav-item > a');
+        // Ambil semua elemen menu utama yang memiliki sub-menu
+        const navLinks = document.querySelectorAll('#keuangan-menu');
 
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault(); // Mencegah aksi default link
-                const parent = item.parentElement;
-                const subMenu = parent.querySelector('.nav-treeview');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Mencegah aksi default link
+
+                const parent = link.parentElement; // Elemen induk .nav-item
+                const subMenu = parent.querySelector('.nav-treeview'); // Sub-menu di dalamnya
 
                 if (subMenu) {
                     // Tampilkan atau sembunyikan sub-menu
-                    const isOpen = subMenu.style.display === 'block';
-                    subMenu.style.display = isOpen ? 'none' : 'block';
+                    const isOpen = parent.classList.contains('menu-open');
 
-                    // Tambahkan atau hapus class aktif
-                    parent.classList.toggle('menu-open', !isOpen);
+                    // Tutup semua menu terbuka lainnya (opsional jika diperlukan)
+                    document.querySelectorAll('.menu-open').forEach(openItem => {
+                        openItem.classList.remove('menu-open');
+                        openItem.querySelector('.nav-treeview').style.display = 'none';
+                    });
+
+                    if (isOpen) {
+                        // Jika menu saat ini sudah terbuka, sembunyikan
+                        parent.classList.remove('menu-open');
+                        subMenu.style.display = 'none';
+                    } else {
+                        // Jika menu saat ini tertutup, buka
+                        parent.classList.add('menu-open');
+                        subMenu.style.display = 'block';
+                    }
                 }
             });
         });
     });
+
 </script>
 @endpush
 
 
 @push('styles')
+<style>
     /* Sub-menu awal disembunyikan */
     .nav-treeview {
         display: none;
@@ -89,12 +112,12 @@
         transition: all 0.3s ease-in-out;
     }
 
-    /* Saat menu terbuka */
+    /* Menu terbuka */
     .menu-open > .nav-treeview {
         display: block;
     }
 
-    /* Tambahkan animasi transisi */
+    /* Tambahkan transisi untuk sub-menu */
     .nav-treeview li {
         opacity: 0;
         transform: translateY(-10px);
@@ -106,6 +129,7 @@
         transform: translateY(0);
     }
 
+</style>
 @endpush
 
 
