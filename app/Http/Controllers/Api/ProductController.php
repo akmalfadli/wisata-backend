@@ -12,10 +12,12 @@ class ProductController extends Controller
     //index
     public function index(Request $request)
     {
+        $user = Auth::user();
+        $allowedProducts = json_decode($user->allowed, true);
         $products = Product::with('category')->when($request->status, function ($query) use ($request) {
             $query->where('status', 'like', "%{$request->status}%");
         })->orderBy('favorite', 'desc')
-
+            ->whereIn('id', $allowedProducts)
             ->get();
         return response()->json(['status' => 'success', 'data' => $products], 200);
     }

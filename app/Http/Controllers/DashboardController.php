@@ -32,9 +32,9 @@ class DashboardController extends Controller
 
 
     	// Fetch data efficiently
-    	$paymentSumsPerDate = Order::selectRaw('DATE(created_at) as date, SUM(payment_amount) as total_payment')
-        	->whereDate('created_at', '>=', $start)
-        	->whereDate('created_at', '<=', $end)
+    	$paymentSumsPerDate = Order::selectRaw('DATE(transaction_time) as date, SUM(payment_amount) as total_payment')
+        	->whereDate('transaction_time', '>=', $start)
+        	->whereDate('transaction_time', '<=', $end)
         	->groupBy('date')
         	->orderBy('date', 'ASC')
         	->get();
@@ -46,11 +46,17 @@ class DashboardController extends Controller
 
     	if ($categories->isNotEmpty() && $products->isNotEmpty()) {
         // Pre-fetch product sales data in a single query
-        	$productSales = OrderItem::selectRaw('product_id, SUM(total_price) as total_sales')
-            	->whereDate('created_at', '>=', $start)
-            	->whereDate('created_at', '<=', $end)
-            	->groupBy('product_id')
-            	->pluck('total_sales', 'product_id');
+        	// $productSales = OrderItem::selectRaw('product_id, SUM(total_price) as total_sales')
+        	// ->whereDate('transaction_time', '>=', $start)
+        	// ->whereDate('created_at', '<=', $end)
+        	// ->groupBy('product_id')
+        	// ->pluck('total_sales', 'product_id');
+            $productSales = OrderItem::selectRaw('product_id, SUM(order_items.total_price) as total_sales, SUM(orders.payment_amount) as total_payment_amount')
+        		->join('orders', 'order_items.order_id', '=', 'orders.id') // Join the orders table
+        		->whereDate('orders.transaction_time', '>=', $start)
+        		->whereDate('orders.transaction_time', '<=', $end)
+        		->groupBy('product_id')
+        		->pluck('total_sales', 'product_id');
 
         	foreach ($categories as $category) {
             	$categorySales = 0;
@@ -67,7 +73,7 @@ class DashboardController extends Controller
     	$salesByProducts= OrderItem::select('order_items.product_id', 'products.name', 'products.image','orders.cashier_name', DB::raw('SUM(order_items.total_price) as total_sales, SUM(order_items.quantity) as total_item'))
     		->join('products', 'order_items.product_id', '=', 'products.id')
     		->join('orders', 'order_items.order_id', '=', 'orders.id')
-    		->whereBetween('order_items.created_at', [
+    		->whereBetween('orders.transaction_time', [
         		Carbon::now()->subWeek()->startOfWeek(), // Start of last week
         		Carbon::now()->subWeek()->endOfWeek()    // End of last week
     		])
@@ -79,12 +85,13 @@ class DashboardController extends Controller
 		$comparison = OrderItem::select([
         		'products.name as product_name', // Select product name
         		'products.image as product_image', // Select product image
-        		DB::raw('SUM(CASE WHEN DATE(order_items.created_at) = "' . Carbon::yesterday()->toDateString() . '" THEN order_items.total_price ELSE 0 END) as yesterday_sales'),
-        		DB::raw('SUM(CASE WHEN DATE(order_items.created_at) = "' . Carbon::yesterday()->subWeek()->toDateString() . '" THEN order_items.total_price ELSE 0 END) as last_week_sales')
+        		DB::raw('SUM(CASE WHEN DATE(orders.transaction_time) = "' . Carbon::yesterday()->toDateString() . '" THEN orders.payment_amount ELSE 0 END) as yesterday_sales'),
+        		DB::raw('SUM(CASE WHEN DATE(orders.transaction_time) = "' . Carbon::yesterday()->subWeek()->toDateString() . '" THEN orders.payment_amount ELSE 0 END) as last_week_sales')
     		])
+        	->join('orders', 'order_items.order_id', '=', 'orders.id') // Join the orders table
     		->join('products', 'order_items.product_id', '=', 'products.id') // Join with products table
     		->groupBy('products.name', 'products.image') // Group by product name and image
-    		->orderByDesc(DB::raw('SUM(CASE WHEN DATE(order_items.created_at) = "' . Carbon::yesterday()->toDateString() . '" THEN order_items.total_price ELSE 0 END)')) // Order by yesterday's sales
+    		->orderByDesc(DB::raw('SUM(CASE WHEN DATE(orders.transaction_time) = "' . Carbon::yesterday()->toDateString() . '" THEN order_items.total_price ELSE 0 END)')) // Order by yesterday's sales
     		->limit(5) // Limit to the top 5 products
     		->get(); // Get the result
 

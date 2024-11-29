@@ -19,9 +19,9 @@ public function index(Request $request)
 
     // Fetch data efficiently
     $orders_all = Order::with('cashier')
-    ->whereDate('created_at', '>=', $start)
-    ->whereDate('created_at', '<=', $end)
-    ->orderBy('created_at', 'DESC');
+    ->whereDate('transaction_time', '>=', $start)
+    ->whereDate('transaction_time', '<=', $end)
+    ->orderBy('transaction_time', 'DESC');
 
     $products = Product::all();
     $categories = Category::all();
@@ -30,11 +30,23 @@ public function index(Request $request)
 
     if ($categories->isNotEmpty() && $products->isNotEmpty()) {
         // Pre-fetch product sales data in a single query
-        $productSales = OrderItem::selectRaw('product_id, SUM(total_price) as total_sales')
-        	->whereDate('created_at', '>=', $start)
-            ->whereDate('created_at', '<=', $end)
-            ->groupBy('product_id')
-            ->pluck('total_sales', 'product_id');
+        // $productSales = OrderItem::selectRaw('product_id, SUM(total_price) as total_sales')
+        // 	->whereDate('created_at', '>=', $start)
+        //     ->whereDate('created_at', '<=', $end)
+        //     ->groupBy('product_id')
+        //     ->pluck('total_sales', 'product_id');
+
+    	$productSales = OrderItem::selectRaw('
+            product_id,
+            SUM(order_items.total_price) as total_sales,
+            SUM(orders.payment_amount) as total_payment_amount
+        ')
+        ->join('orders', 'order_items.order_id', '=', 'orders.id') // Join the orders table
+        ->whereDate('orders.transaction_time', '>=', $start)
+        ->whereDate('orders.transaction_time', '<=', $end)
+        ->groupBy('product_id')
+        ->pluck('total_sales', 'product_id');
+
 
         foreach ($categories as $category) {
             $categorySales = 0;

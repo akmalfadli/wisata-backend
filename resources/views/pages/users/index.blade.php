@@ -77,7 +77,7 @@
                                                     {{ $user->phone }}
                                                 </td>
                                                 <td>
-                                                    {{ $user->role }}
+                                                    {{ ucwords(str_replace('_', ' ', $user->role)) }}
                                                 </td>
                                                 <td>{{ $user->created_at }}</td>
                                                 <td>

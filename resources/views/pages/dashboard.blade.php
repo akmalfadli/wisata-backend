@@ -308,12 +308,10 @@
                                         class="dropdown-toggle btn btn-primary"
                                         data-toggle="dropdown">Filter</a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="#"
-                                            class="dropdown-item has-icon"><i class="far fa-circle"></i> Electronic</a>
-                                        <a href="#"
-                                            class="dropdown-item has-icon"><i class="far fa-circle"></i> T-shirt</a>
-                                        <a href="#"
-                                            class="dropdown-item has-icon"><i class="far fa-circle"></i> Hat</a>
+                                        @foreach($salesByProducts as $product)
+                                        	<a href="#"
+                                            	class="dropdown-item has-icon"><i class="far fa-circle"></i> <span style="word-wrap: break-word; white-space: normal; max-width: 20ch; display: inline-block;">{{$product->name}}</span></a>
+                                        @endforeach
                                         <div class="dropdown-divider"></div>
                                         <a href="#"
                                             class="dropdown-item">View All</a>

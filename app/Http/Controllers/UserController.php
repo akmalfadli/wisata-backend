@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Product;
 
 class UserController extends Controller
 {
@@ -17,13 +18,15 @@ class UserController extends Controller
                 ->orWhere('email', 'like', "%{$request->keyword}%")
                 ->orWhere('phone', 'like', "%{$request->keyword}%");
         })->orderBy('id', 'desc')->paginate(10);
-        return view('pages.users.index', compact('users'));
+        $products = Product::all();
+        return view('pages.users.index', compact(['users','products']));
     }
 
     //create
     public function create()
     {
-        return view('pages.users.create');
+        $products = Product::all();
+        return view('pages.users.create', compact('products'));
     }
 
     //store
@@ -37,23 +40,38 @@ class UserController extends Controller
             'role' => 'required',
         ]);
 
-        User::create($request->all());
+        $selectedValues = isset($_POST['product']) ? $_POST['product'] : [];
+        //dd($selectedValues);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password), // Ensure password is hashed
+            'phone' => $request->phone,
+            'role' => $request->role,
+            'allowed' => json_encode(array_map('intval', $selectedValues))
+        ]);
+
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     //edit
     public function edit(User $user)
     {
-        return view('pages.users.edit', compact('user'));
+        $products = Product::all();
+        return view('pages.users.edit', compact(['user', 'products']));
     }
 
     //update
     public function update(Request $request, User $user)
     {
+        $selectedValues = isset($_POST['product']) ? $_POST['product'] : [];
+        //dd($selectedValues);
 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
+        $user->allowed = array_map('intval', $selectedValues);
         $user->save();
 
         //check if phone is not empty

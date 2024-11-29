@@ -3,6 +3,37 @@
 @section('title', 'Edit User')
 
 @push('style')
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 10px; /* Ensure spacing below the label */
+            font-weight: bold;
+        }
+        .selectgroup {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .selectgroup-input {
+            display: none; /* Hide native checkbox */
+        }
+        .selectgroup-button {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .selectgroup-input:checked + .selectgroup-button {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+    </style>
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
@@ -102,16 +133,37 @@
                                         <span class="selectgroup-button">User</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="staff" class="selectgroup-input"
-                                            @if ($user->role == 'staff') checked @endif>
-                                        <span class="selectgroup-button">Staff</span>
+                                        <input type="radio" name="role" value="staff_play" class="selectgroup-input"
+                                            @if ($user->role == 'staff_play') checked @endif>
+                                        <span class="selectgroup-button">Staff Playground</span>
                                     </label>
-
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="role" value="staff_parkir" class="selectgroup-input"
+                                            @if ($user->role == 'staff_parkir') checked @endif>
+                                        <span class="selectgroup-button">Staff Parkir</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="role" value="staff_resto" class="selectgroup-input"
+                                            @if ($user->role == 'staff_resto') checked @endif>
+                                        <span class="selectgroup-button">Staff Resto</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label mb-10">Allowed Products</label>
+                                <div class="selectgroup">
+                                    @foreach ($products as $product)
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox" name="product[]" value={{$product->id}} class="selectgroup-input"
+                                            @if (in_array($product->id, json_decode($user->allowed))) checked @endif>
+                                            <span class="selectgroup-button">{{$product->name}}</span>
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <button class="btn btn-primary">Submit</button>
+                            <button id="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
