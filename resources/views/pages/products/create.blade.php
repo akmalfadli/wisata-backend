@@ -75,6 +75,19 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label>Profit</label>
+                                <input type="number"
+                                    class="form-control @error('profit')
+                                is-invalid
+                            @enderror"
+                                    name="profit">
+                                @error('profit')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Stock</label>
                                 <input type="number"
                                     class="form-control @error('stock')

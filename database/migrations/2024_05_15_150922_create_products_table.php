@@ -17,6 +17,7 @@ return new class extends Migration
             //description
             $table->text('description')->nullable();
             $table->integer('price');
+            $table->integer('profit');
             $table->integer('stock');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('created_by');

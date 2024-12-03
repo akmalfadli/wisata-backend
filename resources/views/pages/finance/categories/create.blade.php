@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Category')
+@section('title', 'Category Create')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -15,7 +15,7 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-			<div class="section-header">
+            <div class="section-header">
                 <h1>Advanced Forms</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -23,13 +23,14 @@
                     <div class="breadcrumb-item">Category</div>
                 </div>
             </div>
+
             <div class="section-body">
                 <h2 class="section-title">Category</h2>
 
+
                 <div class="card">
-                    <form action="{{ route('categories.update', $category) }}" method="POST">
+                    <form action="{{ route('finance.categories.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <div class="card-header">
                             <h4>Input Text</h4>
                         </div>
@@ -40,7 +41,7 @@
                                     class="form-control @error('name')
                                 is-invalid
                             @enderror"
-                                    name="name" value="{{ $category->name }}">
+                                    name="name">
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -53,14 +54,30 @@
                                     class="form-control @error('description')
                                 is-invalid
                             @enderror"
-                                    name="description" value="{{ $category->description }}">
+                                    name="description">
                                 @error('description')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-
+                            <div class="form-group">
+                                <label class="form-label">Transaction Type</label>
+                                <div class="selectgroup col-md-6">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="transaction_type" value="income" class="selectgroup-input" checked="">
+                                        <span class="selectgroup-button">
+                                            <i class="fas fa-piggy-bank"></i> Income
+                                        </span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="transaction_type" value="expenses" class="selectgroup-input">
+                                        <span class="selectgroup-button">
+                                            <i class="fas fa-wallet"></i> Expenses
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
 
                         </div>
                         <div class="card-footer text-right">

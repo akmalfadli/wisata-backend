@@ -15,7 +15,7 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-			<div class="section-header">
+            <div class="section-header">
                 <h1>Advanced Forms</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -27,7 +27,7 @@
                 <h2 class="section-title">Category</h2>
 
                 <div class="card">
-                    <form action="{{ route('categories.update', $category) }}" method="POST">
+                    <form action="{{ route('finance.categories.update', $category) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="card-header">
@@ -60,8 +60,27 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label class="form-label">Transaction Type</label>
+                                <div class="selectgroup col-md-6">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="transaction_type" value="income" class="selectgroup-input"
+                                            {{ $category->type === 'income' ? 'checked' : '' }}>
+                                        <span class="selectgroup-button">
+                                            <i class="fas fa-piggy-bank"></i> Income
+                                        </span>
+                                    </label>
 
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="transaction_type" value="expenses" class="selectgroup-input"
+                                            {{ $category->type === 'expenses' ? 'checked' : '' }}>
+                                        <span class="selectgroup-button">
+                                            <i class="fas fa-piggy-bank"></i> Expenses
+                                        </span>
+                                    </label>
 
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer text-right">
                             <button class="btn btn-primary">Submit</button>
