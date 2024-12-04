@@ -82,7 +82,7 @@
                                     class="form-control @error('profit')
                                 is-invalid
                             @enderror"
-                                    name="price" value="{{ $product->profit }}">
+                                    name="profit" value="{{ $product->profit }}">
                                 @error('profit')
                                     <div class="invalid-feedback">
                                         {{ $message }}

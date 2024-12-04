@@ -270,7 +270,7 @@
                 				@foreach($resultsCompare as $results)
 
                                 		<div class="col text-center">
-                                    		<img src="{{ asset('storage/' . $results['product_image']) }}" alt="{{ $results['product_name'] }}" style="width: 50px;" >
+                                    		<img src="{{ asset('storage/public/' . $results['product_image']) }}" alt="{{ $results['product_name'] }}" style="width: 50px;" >
                                     		<div class="font-weight-bold mt-2">{{$results['product_name']}}</div>
                                     		<div class="text-muted text-small">
                 								<span class="text-primary">
@@ -337,7 +337,7 @@
                                             <a href="#">
                                                 <img class="mr-3 rounded"
 												     width="50"
-												     src="{{ asset('storage/' . $product->image) }}"
+												     src="{{ asset('storage/public/' . $product->image) }}"
 												     alt="product">
 
                                             </a>
